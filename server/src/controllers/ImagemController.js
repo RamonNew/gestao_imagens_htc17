@@ -1,6 +1,6 @@
 import path from 'path';
 import url from 'url';
-import { createImagem } from '../models/ImagemModel.js';
+import { createImagem, deleteImagem, readImagem, updateImagem } from '../models/ImagemModel.js';
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,6 +30,43 @@ export async function inserindoImagem (req,res){
         }else{
            res.status(415).json({message:'Arquivo Invalido!'});
         }
+    }
+}
+
+export async function mostrandoImagens(req,res) {
+    console.log('ImagemController :: mostrandoImagens');
+    try {
+        const [status,resposta] = await readImagem();
+        res.status(status).json(resposta);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json('ImagemController :: Erro');
+    }
+}
+
+export async function atualizandoImagem(req, res) {
+    console.log('ImagemController :: atualizandoImagem');
+    const {descricao} = req.body;
+    const {id_imagem} = req.params;
+    try {
+        const [status, resposta] = await updateImagem(descricao,id_imagem);
+        res.status(status).json(resposta);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json('ImagemController :: Erro');
+    }
+}
+
+export async function deletandoImagem (req,res){
+    console.log('ImagemController :: deletandoImagem');
+    const {id_imagem} = req.params;
+
+    try {
+        const [status,resposta] = await deleteImagem(id_imagem);
+        res.status(status).json(resposta);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json('ImagemController :: Erro');
     }
 }
 
