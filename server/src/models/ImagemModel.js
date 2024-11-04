@@ -43,7 +43,10 @@ export async function updateImagem(descricao,id_imagem) {
 
     try {
         const [retorno] = await conexao.query(sql,params);
-        return [200, retorno];
+        if(retorno.affectedRows < 1){
+            return [404, {message:'Imagem não encontrada'}] 
+         }
+         return [200, {message:'Imagem atualizada'}];
     } catch (error) {
         console.log(error);
         return [500,error];
@@ -58,7 +61,11 @@ export async function deleteImagem(id_imagem) {
 
     try {
         const [retorno] = await conexao.query(sql,params);
-        return [200, retorno];
+        if(retorno.affectedRows < 1){
+           return [404, {message:'Imagem não encontrada'}] 
+        }
+        return [200, {message:'Imagem deletada'}];
+
     } catch (error) {
         console.log(error);
         return [500,error];
