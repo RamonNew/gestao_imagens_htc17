@@ -1,5 +1,6 @@
 import express from "express";
 import fileUpload from 'express-fileupload';
+import cors from 'cors';
 import { atualizandoImagem, deletandoImagem, downloadImagem, inserindoImagem, mostrandoImagens } from "./controllers/ImagemController.js";
 
 const app = express();
@@ -7,6 +8,7 @@ const porta = 5000;
 
 app.use(fileUpload());
 app.use(express.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("API Funcionando");
