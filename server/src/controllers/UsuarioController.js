@@ -62,12 +62,12 @@ export async function mostrarUmUsuario(req, res) {
 export async function atualizarUsuario(req, res) {
   console.log("UsuarioController :: atualizarUsuario");
   const { login, senha } = req.body;
-
+  const {id_usuario} = req.params;
   if (!login || !senha) {
     res.status(400).json({ message: "login e senha devem ser criados" });
   } else {
     try {
-      const [status, resposta] = await updateUsuario(login, senha);
+      const [status, resposta] = await updateUsuario(login, senha,id_usuario);
       res.status(status).json(resposta);
     } catch (error) {
       console.log("UsuarioController :: atualizarUsuario");
@@ -104,9 +104,13 @@ export async function logarUsuario(req, res) {
     if (!login || !senha) {
         res.status(400).json({ message: "login e senha devem ser criados" });
     }else{
-        console.log("UsuarioController :: logarUsuario");
-        res
+        try {
+          const [status, resposta] = await getUserByLoginPassword(login,senha);
+          res.status(status).json(resposta);
+        } catch (error) {
+          res
           .status(500)
-          .json({ message: "UsuarioController :: erro ao logarUsuario" });     
+          .json({ message: "UsuarioController :: erro ao logarUsuario" });  
+        }      
     }
 }

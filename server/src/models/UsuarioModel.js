@@ -8,7 +8,7 @@ export async function createUsuario(login, senha) {
   const params = [login, senha];
 
   try {
-    const [resposta] = await conexao.createPool(sql, params);
+    const [resposta] = await conexao.query(sql, params);
     return [201, { message: "Usuario Cadastrado" }];
   } catch (error) {
     console.log(error);
@@ -22,7 +22,7 @@ export async function readUsuario() {
   const sql = "SELECT * FROM usuarios";
 
   try {
-    const [resposta] = await conexao.createPool(sql);
+    const [resposta] = await conexao.query(sql);
     return [200, resposta];
   } catch (error) {
     console.log(error);
@@ -37,7 +37,7 @@ export async function showOneUsuario(id_usuario) {
   const params = [id_usuario];
 
   try {
-    const [resposta] = await conexao.createPool(sql, params);
+    const [resposta] = await conexao.query(sql, params);
     if (resposta.length < 1) {
       return [404, { message: "Usuario não encontrado" }];
     } else {
@@ -56,7 +56,7 @@ export async function updateUsuario(login, senha, id_usuario) {
   const params = [login, senha, id_usuario];
 
   try {
-    const [resposta] = await conexao.createPool(sql, params);
+    const [resposta] = await conexao.query(sql, params);
     if (resposta.affectedRows < 1) {
       return [404, { message: "Usuario não encontrado" }];
     }
@@ -73,7 +73,7 @@ export async function deleteUsuario(id_usuario) {
   const params = [id_usuario];
 
   try {
-    const [resposta] = await conexao.createPool(sql, params);
+    const [resposta] = await conexao.query(sql, params);
     if (resposta.affectedRows < 1) {
       return [404, { message: "Usuario não encontrado" }];
     }
@@ -89,7 +89,7 @@ export async function getUserByLoginPassword(login, senha) {
   const sql = "SELECT id_usuario FROM usuarios WHERE login=? AND senha=?";
   const params = [login, senha];
   try {
-    const [resposta] = await conexao.createPool(sql, params);
+    const [resposta] = await conexao.query(sql, params);
     if (resposta.length < 1) {
       return [401, { message: "Usuario e/ou senha invalidos" }];
     }else{
